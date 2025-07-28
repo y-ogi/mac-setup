@@ -2,7 +2,7 @@
 # ------------------------------------------------------------
 # 使い方:
 #   make            → Homebrew & Brewfile セットアップ
-#   make dotfiles   → dotfiles (GNU Stow) のリンク展開
+#   make dotfiles   → dotfiles (GNU Stow) のリンク展開
 #   make all        → Homebrew + dotfiles
 #   make xcode      → Xcode (Brewfile.xcode) だけ
 # ------------------------------------------------------------
@@ -18,23 +18,23 @@ DOTFILES_MODULES?= zsh tmux            # stow するディレクトリ (スペ�
 setup:
 	@$(MAKE) _bundle BREWFILE=$(BREWFILE)
 
-# dotfiles 展開 --------------------------------------------------------- ---------------------------------------------------------
+# --- dotfiles 展開 -----------------------------------------------------
 .PHONY: dotfiles
 ifneq (,$(wildcard $(DOTFILES_DIR)))
 dotfiles: _ensure_stow
 	@echo "▶︎ Linking dotfiles with stow ($(DOTFILES_MODULES))"; \
-	cd $(DOTFILES_DIR) && stow $(DOTFILES_MODULES)
+	stow -d $(DOTFILES_DIR) -t $(HOME) $(DOTFILES_MODULES)
 else
 dotfiles:
-	@echo "⚠️  $(DOTFILES_DIR) ディレクトリが見つかりません。スキップしました。";
+	@echo "⚠️  $(DOTFILES_DIR) ディレクトリが見つかりません。スキップしました。"
 endif
 
-# Xcode 用 --------------------------------------------------------------
+# --- Xcode 用 ----------------------------------------------------------
 .PHONY: xcode
 xcode:
 	@$(MAKE) _bundle BREWFILE=$(BREWFILE_XCODE)
 
-# すべて ---------------------------------------------------------------- ----------------------------------------------------------------
+# --- すべて ------------------------------------------------------------
 .PHONY: all
 all: setup dotfiles
 
@@ -46,17 +46,17 @@ _bundle:
 	  echo "▶︎ Installing Homebrew …"; \
 	  /bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; \
 	fi; \
-	# PATH 反映 (Apple Silicon / Intel)
+	# PATH 反映 (Apple Silicon / Intel 共通) \
 	if [ -x /opt/homebrew/bin/brew ]; then eval "$$(/opt/homebrew/bin/brew shellenv)"; fi; \
 	if [ -x /usr/local/bin/brew ];  then eval "$$(/usr/local/bin/brew shellenv)";  fi; \
 	echo "▶︎ Running brew bundle --file $(BREWFILE)"; \
 	brew bundle --file "$(BREWFILE)"; \
 	echo "✅ Brew bundle completed";
 
-# --- stow インストール ------------------------------------------------- インストール -------------------------------------------------
+# --- stow インストール -------------------------------------------------
 .PHONY: _ensure_stow
 _ensure_stow:
 	@if ! command -v stow >/dev/null 2>&1; then \
-	  echo "▶︎ Installing GNU Stow (missing)"; \
+	  echo "▶︎ Installing GNU Stow (missing)"; \
 	  brew install stow; \
 	fi
