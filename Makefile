@@ -11,7 +11,7 @@
 BREWFILE        ?= Brewfile
 BREWFILE_XCODE  ?= Brewfile.xcode
 DOTFILES_DIR    ?= dotfiles            # dotfiles ルート
-DOTFILES_MODULES?= zsh tmux            # stow するディレクトリ (スペース区切り)
+DOTFILES_MODULES?= zsh tmux claude codex # stow するディレクトリ (スペース区切り)
 
 # --- 既定ターゲット ----------------------------------------------------
 .PHONY: setup

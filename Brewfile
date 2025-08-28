@@ -26,6 +26,7 @@ brew "mas"               # Mac App Store CLI
 brew "gh"                # GitHub CLI
 brew "asdf"              # ランタイム統合マネージャ
 brew "stow"              # dotfiles シンボリックリンク管理
+brew "codex"             # OpenAI Codex CLI
 
 # ---------- Mac App Store (mas) ---------------------------------------
 mas "Paste",     id: 967805235   # クリップボードマネージャ
